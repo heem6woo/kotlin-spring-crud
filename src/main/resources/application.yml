@@ -1,0 +1,23 @@
+
+server.servlet.context-path: /api
+
+spring:
+  application:
+    name: kotlin-crud
+  datasource:
+    url: jdbc:mysql://localhost:3306/kotlin
+    username: kotlin
+    password: kotlin
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQLDialect
+    properties:
+      hibernate:
+        globally_quoted_identifiers: true
+        globally_quoted_identifiers_skip_column_definitions: true
+
+
+
+
