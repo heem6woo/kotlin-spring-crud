@@ -3,19 +3,21 @@ package org.project.portfolio.member.entity
 import jakarta.persistence.*
 import lombok.Data
 import lombok.NoArgsConstructor
-import org.project.portfolio.common.UserRole
-import org.springframework.security.core.GrantedAuthority
-import org.springframework.security.core.authority.SimpleGrantedAuthority
-import org.springframework.security.core.userdetails.UserDetails
+import org.project.portfolio.common.MemberRole
+import org.project.portfolio.member.dto.MemberDto
+import java.time.LocalDateTime
 
 
 @Data
 @NoArgsConstructor
-@Entity(name = "user")
+@Entity(name = "member")
 class Member (
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Long = 0L,
 
-    @Column(name = "user_id")
-    var userId: String,
+    @Column(name = "member_id")
+    var memberId: String,
 
     @Column(name = "email")
     var email: String,
@@ -24,45 +26,17 @@ class Member (
     var passwordHash: String,
 
     @Column(name = "Role")
-    var role: UserRole = UserRole.USER
-) : UserDetails {
+    var role: MemberRole = MemberRole.USER,
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null
+    val createdAt : LocalDateTime = LocalDateTime.now()
+) {
 
+    fun toDto() = MemberDto(
+        memberId = memberId,
+        email = email,
+        password = passwordHash
+    )
 
-    override fun getAuthorities(): MutableCollection<out GrantedAuthority>? {
-        return mutableListOf(SimpleGrantedAuthority(role.name));
-    }
-
-    override fun getPassword(): String {
-        return passwordHash
-    }
-
-    override fun getUsername(): String {
-        return userId
-    }
-
-    override fun isAccountNonExpired(): Boolean {
-        return true
-    }
-
-    override fun isAccountNonLocked(): Boolean {
-        return true
-    }
-
-    override fun isCredentialsNonExpired(): Boolean {
-        return true
-    }
-
-    override fun isEnabled(): Boolean {
-        return true
-    }
-
-    companion object {
-        private const val serialVersionUID = 1L
-    }
 
 
 }

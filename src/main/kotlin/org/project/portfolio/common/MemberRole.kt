@@ -1,5 +1,5 @@
 package org.project.portfolio.common
 
-enum class UserRole {
+enum class MemberRole {
     USER, ADMIN
 }

@@ -6,6 +6,8 @@ plugins {
     kotlin("plugin.lombok") version "1.9.24"
     kotlin("plugin.jpa") version "1.9.24"
     id("io.freefair.lombok") version "5.3.0"
+    kotlin("plugin.allopen") version "1.6.21"
+    kotlin("plugin.noarg") version "1.6.21"
 }
 
 group = "org.project"
@@ -31,8 +33,12 @@ dependencies {
 
     // spring data jpa
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    runtimeOnly("mysql:mysql-connector-java:8.0.28")
 
-
+    //logging
+    implementation("io.github.microutils:kotlin-logging:3.0.5")
+    // model mapper
+    implementation("org.modelmapper:modelmapper:2.4.4")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
