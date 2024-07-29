@@ -17,4 +17,12 @@ interface PostRepository : JpaRepository<Post, Long> {
     // within 10 days
     @Query("SELECT p FROM post p WHERE p.id = :id AND p.createdAt >= :date")
     fun findPostByIdAnCreatedAfter(id: Long, date: LocalDateTime): Post?
+
+
+    fun findAllByOrderByCreatedAtDesc(): List<Post>
+
+    fun findByTitleContaining(title: String): List<Post>
+
+    @Query("SELECT p FROM post p WHERE p.deleted = true AND p.updatedAt > :date")
+    fun findByDeletedAndAfterDeletedAt(date : LocalDateTime): List<Post>
 }

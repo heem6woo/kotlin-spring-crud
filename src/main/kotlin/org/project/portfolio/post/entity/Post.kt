@@ -31,6 +31,8 @@ class Post(
     @UpdateTimestamp
     var updatedAt : LocalDateTime? = null
 
+    var deleted : Boolean = false
+
 
 
 }

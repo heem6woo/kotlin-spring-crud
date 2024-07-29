@@ -8,6 +8,7 @@ import org.project.portfolio.post.repository.PostRepository
 import org.springframework.stereotype.Service
 import java.net.PasswordAuthentication
 import java.time.LocalDateTime
+import java.util.*
 
 @Service
 @Transactional
@@ -55,6 +56,24 @@ class PostService(
         post.content = postRequest.content ?: post.content
 
         postRepository.save(post)
+    }
+
+    fun deletePost(userEmail: String, postId: Long) {
+        val member = memberRepository.findByEmail(userEmail) ?: throw IllegalArgumentException("Member not found")
+
+        val post = postRepository.findById(postId)
+
+        if(!post.isPresent){
+            throw IllegalArgumentException("Post not found")
+        }
+        val savedPost = post.get()
+        if (savedPost.member?.id != member.id) {
+            throw IllegalArgumentException("You are not the author of this post")
+        }
+
+        savedPost.deleted = true
+
+        postRepository.save(savedPost)
     }
 
 

@@ -6,6 +6,7 @@ import org.project.portfolio.member.entity.Member
 import org.project.portfolio.post.dto.PostRequest
 import org.project.portfolio.post.service.PostService
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -37,5 +38,14 @@ class PostController(
         postService.updatePost(userEmail, postId, postRequest)
 
         return ResponseEntity.ok("Post updated")
+    }
+
+    @DeleteMapping("/{id}")
+    fun deletePost(principal: Principal, @PathVariable("id") postId: Long): ResponseEntity<String> {
+        val userEmail : String = principal.name
+
+        postService.deletePost(userEmail, postId)
+
+        return ResponseEntity.ok("Post deleted")
     }
 }
