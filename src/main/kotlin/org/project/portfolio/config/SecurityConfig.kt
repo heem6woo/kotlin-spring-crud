@@ -25,12 +25,15 @@ class SecurityConfig(
          http
              .csrf { it.disable() }
              .csrf {it.disable() }
+             .httpBasic{
+             } // to enable basic authentication
              .authorizeHttpRequests {
-                 it.requestMatchers("/**").permitAll()
+                 it.requestMatchers("/api/auth/**").permitAll()
+                 it.anyRequest().authenticated()
              }
-             .sessionManagement {
-                    it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-             }
+//             .sessionManagement {
+//                    it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//             }
 
         return http.build()
     }
@@ -53,8 +56,6 @@ class SecurityConfig(
                 .build()
         }
     }
-
-
 
 
     @Bean

@@ -11,12 +11,12 @@ import org.springframework.stereotype.Service
 
 private val log = KotlinLogging.logger {}
 @Service
+@Transactional
 class MemberService(
     private val memberRepository: MemberRepository,
     private val passwordEncoder: BCryptPasswordEncoder
 ) {
 
-    @Transactional
     fun createMember(memberRequest: MemberRequest): Member? {
 
         val member = memberRequest.name?.let {
@@ -29,6 +29,10 @@ class MemberService(
             }
         }
         return member?.let { memberRepository.save(it) }
+    }
+
+    fun deleteAll() {
+        memberRepository.deleteAll()
     }
 
     fun getMember(email: String): MemberResponse {

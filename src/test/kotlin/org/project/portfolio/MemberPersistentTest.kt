@@ -1,6 +1,7 @@
 package org.project.portfolio
 
 import com.google.gson.Gson
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.project.portfolio.common.MemberRole
 import org.project.portfolio.member.dto.MemberRequest
@@ -41,6 +42,13 @@ class MemberPersistentTest(
         }.andExpect {
             status { isBadRequest() }
         }
+    }
+
+    @AfterEach
+    fun tearDown(
+        @Autowired memberService: MemberService
+    ) {
+        memberService.deleteAll()
     }
 
 
