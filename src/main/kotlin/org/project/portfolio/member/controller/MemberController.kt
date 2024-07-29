@@ -19,16 +19,6 @@ class MemberController(
     @GetMapping
     fun getMembers() = memberService.getMembers()
 
-    @PostMapping
-    fun createMember(@RequestBody memberRequest: MemberDto): MemberDto {
-        log.info("Creating member with id: ${memberRequest.memberId}")
-        return memberService.createMember(memberRequest)
-            ?.toDto()
-            ?: throw ResponseStatusException(HttpStatus.BAD_REQUEST,"Member not created")
-    }
-
-
-
 
     @GetMapping("/{userId}")
     fun getMember(@PathVariable userId: String): ResponseEntity<MemberDto> {
