@@ -4,9 +4,13 @@ import lombok.AllArgsConstructor
 import org.project.portfolio.common.MemberRole
 
 @AllArgsConstructor
-data class AuthResponse(
-    val email: String = "",
-    val role: MemberRole = MemberRole.USER
-) {
+data class MemberResponse(
 
+    var name: String? = null,
+
+    var email: String? = null,
+
+    var role: MemberRole = MemberRole.USER
+
+    ) {
 }

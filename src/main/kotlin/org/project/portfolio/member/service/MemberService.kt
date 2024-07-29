@@ -1,13 +1,12 @@
 package org.project.portfolio.member.service
 
-import jakarta.persistence.Id
 import jakarta.transaction.Transactional
 import mu.KotlinLogging
-import org.project.portfolio.member.dto.MemberDto
+import org.project.portfolio.member.dto.MemberRequest
+import org.project.portfolio.member.dto.MemberResponse
 import org.project.portfolio.member.entity.Member
 import org.project.portfolio.member.repository.MemberRepository
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
-import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 
 private val log = KotlinLogging.logger {}
@@ -18,12 +17,12 @@ class MemberService(
 ) {
 
     @Transactional
-    fun createMember(memberRequest: MemberDto): Member? {
+    fun createMember(memberRequest: MemberRequest): Member? {
 
-        val member = memberRequest.memberId?.let {
+        val member = memberRequest.name?.let {
             memberRequest.email?.let { it1 ->
                 Member (
-                    memberId = it,
+                    name = it,
                     email = it1,
                     passwordHash = passwordEncoder.encode(memberRequest.password)
                 )
@@ -32,8 +31,8 @@ class MemberService(
         return member?.let { memberRepository.save(it) }
     }
 
-    fun getMember(memberId: String): MemberDto {
-        val member = memberRepository.findByMemberId(memberId) ?: throw IllegalArgumentException("Member not found")
+    fun getMember(email: String): MemberResponse {
+        val member = memberRepository.findByEmail(email) ?: throw IllegalArgumentException("Member not found")
         return member.toDto()
     }
 
@@ -45,7 +44,7 @@ class MemberService(
         return memberRepository.save(member)
     }
 
-    fun deleteMember(memberId: String) {
-        memberRepository.deleteMemberByMemberId(memberId)
+    fun deleteMember(email: String) {
+        memberRepository.deleteMemberByEmail(email)
     }
 }

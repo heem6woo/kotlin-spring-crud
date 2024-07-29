@@ -1,9 +1,10 @@
 package org.project.portfolio.member.controller
 
-import org.apache.coyote.Response
+import jakarta.validation.Valid
 import org.project.portfolio.member.dto.AuthRequest
 import org.project.portfolio.member.dto.AuthResponse
-import org.project.portfolio.member.dto.MemberDto
+import org.project.portfolio.member.dto.MemberRequest
+import org.project.portfolio.member.dto.MemberResponse
 import org.project.portfolio.member.service.MemberService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -24,7 +25,7 @@ class AuthController(
 ) {
 
     @PostMapping("/register")
-    fun createMember(@RequestBody memberRequest: MemberDto): ResponseEntity<MemberDto> {
+    fun createMember(@Valid @RequestBody memberRequest: MemberRequest): ResponseEntity<MemberResponse> {
 
         return ResponseEntity.ok( memberService.createMember(memberRequest)
             ?.toDto()
@@ -35,14 +36,14 @@ class AuthController(
     fun login(@RequestBody authRequest: AuthRequest): ResponseEntity<AuthResponse> {
 
         val authentication = authenticationManager.authenticate(
-            UsernamePasswordAuthenticationToken(authRequest.memberId, authRequest.password)
+            UsernamePasswordAuthenticationToken(authRequest.email, authRequest.password)
         ) //
 
         SecurityContextHolder.getContext().authentication = authentication
 
-        val member = authRequest.memberId?.let { memberService.getMember(it)
+        val member = authRequest.email?.let { memberService.getMember(it)
         } ?: throw ResponseStatusException(HttpStatus.UNAUTHORIZED, "Member not found")
 
-        return ResponseEntity.ok(member.memberId?.let { member.email?.let { it1 -> AuthResponse(it, it1) } })
+        return ResponseEntity.ok(member.email?.let { AuthResponse(it, member.role) })
     }
 }

@@ -34,7 +34,11 @@ dependencies {
     // spring data jpa
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     runtimeOnly("mysql:mysql-connector-java:8.0.28")
+    // validation
+    implementation("org.springframework.boot:spring-boot-starter-validation")
 
+    // Gson
+    implementation("com.google.code.gson:gson:2.8.8")
     //logging
     implementation("io.github.microutils:kotlin-logging:3.0.5")
     // model mapper

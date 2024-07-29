@@ -4,7 +4,7 @@ import jakarta.persistence.*
 import lombok.Data
 import lombok.NoArgsConstructor
 import org.project.portfolio.common.MemberRole
-import org.project.portfolio.member.dto.MemberDto
+import org.project.portfolio.member.dto.MemberResponse
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import java.time.LocalDateTime
@@ -16,13 +16,13 @@ import java.time.LocalDateTime
 class Member (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long = 0L,
+    val id: Long = 0L,
 
-    @Column(name = "member_id")
-    var memberId: String = "Guest",
+    @Column(name = "name")
+    val name: String = "Guest",
 
     @Column(name = "email")
-    var email: String = "Guest",
+    val email: String = "Guest",
 
     @Column(name = "password")
     var passwordHash: String,
@@ -33,10 +33,10 @@ class Member (
     val createdAt : LocalDateTime = LocalDateTime.now()
 ) : UserDetails {
 
-    fun toDto() = MemberDto(
-        memberId = memberId,
+    fun toDto() = MemberResponse(
+        name = name,
         email = email,
-        password = passwordHash
+        role = role
     )
 
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
@@ -48,7 +48,7 @@ class Member (
     }
 
     override fun getUsername(): String {
-        return memberId
+        return email
     }
 
     override fun isAccountNonExpired(): Boolean {

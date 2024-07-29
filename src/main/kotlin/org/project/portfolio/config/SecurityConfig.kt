@@ -45,9 +45,9 @@ class SecurityConfig(
     fun userDetailsService(): UserDetailsService {
 
         return UserDetailsService {
-            val member = memberRepository.findByMemberId(it) ?: throw IllegalArgumentException("Member not found")
+            val member = memberRepository.findByEmail(it) ?: throw IllegalArgumentException("Member not found")
             User.builder()
-                .username(member.memberId)
+                .username(member.email)
                 .password(member.passwordHash)
                 .roles(member.role.toString())
                 .build()
