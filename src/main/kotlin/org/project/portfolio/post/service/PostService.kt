@@ -7,6 +7,7 @@ import org.project.portfolio.post.entity.Post
 import org.project.portfolio.post.repository.PostRepository
 import org.springframework.stereotype.Service
 import java.net.PasswordAuthentication
+import java.time.LocalDateTime
 
 @Service
 @Transactional
@@ -38,7 +39,13 @@ class PostService(
 
     fun updatePost(userEmail: String, postId: Long, postRequest: PostRequest) {
         val member = memberRepository.findByEmail(userEmail) ?: throw IllegalArgumentException("Member not found")
-        val post = postRepository.findById(postId).orElseThrow { IllegalArgumentException("Post not found") }
+
+        // check if the post  is created 10 days ago, then cannot update
+        val tenDays = LocalDateTime.now().minusDays(10)
+
+        // crruent date < created date + 10 days
+        val post = postRepository.findPostByIdAnCreatedAfter(postId, tenDays) ?: throw IllegalArgumentException("Post not found")
+
 
         if (post.member?.id != member.id) {
             throw IllegalArgumentException("You are not the author of this post")
