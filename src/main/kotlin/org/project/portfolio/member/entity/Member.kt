@@ -21,7 +21,7 @@ class Member (
     @Column(name = "name")
     val name: String = "Guest",
 
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     val email: String = "Guest",
 
     @Column(name = "password")
@@ -32,6 +32,7 @@ class Member (
 
     val createdAt : LocalDateTime = LocalDateTime.now()
 ) : UserDetails {
+
 
     fun toDto() = MemberResponse(
         name = name,
@@ -65,5 +66,16 @@ class Member (
 
     override fun isEnabled(): Boolean {
         return true
+    }
+
+    override fun equals(other: Any?): Boolean {
+        return if (this === other) {
+            true
+        } else if (other == null || javaClass != other.javaClass) {
+            false
+        } else {
+            val member = other as Member
+            return name == member.name && email == member.email && role == member.role
+        }
     }
 }
