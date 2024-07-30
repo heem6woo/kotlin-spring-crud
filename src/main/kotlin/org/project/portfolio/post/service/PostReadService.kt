@@ -20,9 +20,11 @@ class PostReadService(
         return postRepository.findByTitleContaining(title)
     }
 
-    fun findByDeletedAndAfterDeletedAt(date : LocalDateTime) : List<Post> {
-        return postRepository.findByDeletedAndAfterDeletedAt(date)
+    fun findByDeletedAtIsNull() : List<Post> {
+        return postRepository.findByDeletedAtIsNull()
     }
+
+
 
 
 

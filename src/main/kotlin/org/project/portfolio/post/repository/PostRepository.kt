@@ -23,6 +23,5 @@ interface PostRepository : JpaRepository<Post, Long> {
 
     fun findByTitleContaining(title: String): List<Post>
 
-    @Query("SELECT p FROM post p WHERE p.deleted = true AND p.updatedAt > :date")
-    fun findByDeletedAndAfterDeletedAt(date : LocalDateTime): List<Post>
+    fun findByDeletedAtIsNull(): List<Post>
 }

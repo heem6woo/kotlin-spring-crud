@@ -1,8 +1,6 @@
 package org.project.portfolio.post.controller
 
-import jakarta.servlet.http.HttpServletRequest
 import jakarta.validation.Valid
-import org.project.portfolio.member.entity.Member
 import org.project.portfolio.post.dto.PostRequest
 import org.project.portfolio.post.service.PostService
 import org.springframework.http.ResponseEntity

@@ -31,8 +31,19 @@ class Post(
     @UpdateTimestamp
     var updatedAt : LocalDateTime? = null
 
-    var deleted : Boolean = false
+    var deletedAt : LocalDateTime? = null
 
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        else if (other !is Post) {
+            return false
+        } else {
+            val otherPost = other as Post
+            return content.equals(otherPost.content)
+                    && title.equals(otherPost.title)
+                    && member?.email.equals(otherPost.member?.email)
+        }
 
+    }
 
 }

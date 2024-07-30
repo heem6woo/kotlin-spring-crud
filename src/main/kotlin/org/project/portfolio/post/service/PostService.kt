@@ -6,9 +6,8 @@ import org.project.portfolio.post.dto.PostRequest
 import org.project.portfolio.post.entity.Post
 import org.project.portfolio.post.repository.PostRepository
 import org.springframework.stereotype.Service
-import java.net.PasswordAuthentication
 import java.time.LocalDateTime
-import java.util.*
+
 
 @Service
 @Transactional
@@ -17,11 +16,11 @@ class PostService(
     private final val memberRepository: MemberRepository
 ) {
 
-    fun createPost(userEmail : String, postRequest: PostRequest){
+    fun createPost(userEmail: String, postRequest: PostRequest): Post {
 
         val member = memberRepository.findByEmail(userEmail) ?: throw IllegalArgumentException("Member not found")
 
-        val post =
+        val post : Post? =
             postRequest.title?.let {
                 postRequest.content?.let { it1 ->
                     Post(
@@ -32,10 +31,10 @@ class PostService(
                 }
             }
 
-
-        if (post != null) {
-            postRepository.save(post)
+        if(post == null){
+            throw IllegalArgumentException("Request is invalid")
         }
+        return postRepository.save(post)
     }
 
     fun updatePost(userEmail: String, postId: Long, postRequest: PostRequest) {
@@ -71,7 +70,7 @@ class PostService(
             throw IllegalArgumentException("You are not the author of this post")
         }
 
-        savedPost.deleted = true
+        savedPost.deletedAt = LocalDateTime.now()
 
         postRepository.save(savedPost)
     }
